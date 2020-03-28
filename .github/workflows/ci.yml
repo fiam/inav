@@ -39,7 +39,7 @@ jobs:
         - name: Setup environment
           run: |
             echo "::set-env name=TARGETS::$(./src/utils/build-targets.sh -n -s ${{ matrix.start }} -c ${{ matrix.count }})"
-            echo "::set-env name=BUILD_SUFFIX::ci-$(git rev-parse --short ${{ github.ref }})"
+            echo "::set-env name=BUILD_SUFFIX::ci-$(git rev-parse --short ${{ github.sha }})"
             echo "::set-env name=IS_LAST_JOB::$([ $(expr ${{ strategy.job-index }} + 1) = ${{ strategy.job-total }} ] && echo yes)"
         - name: Ensure all targets will be tested
           if: ${{ env.IS_LAST_JOB }}
