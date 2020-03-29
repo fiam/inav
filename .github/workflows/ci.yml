@@ -47,9 +47,10 @@ jobs:
             # from the hash of the latest commit in the PR, that's
             # why we try github.event.pull_request.head.sha first
             COMMIT_ID=${COMMIT_ID:-${{ github.sha }}}
-            export COMMIT_ID
+            #export COMMIT_ID
+            BUILD_SUFFIX=ci-$(git rev-parse --short ${COMMIT_ID})
             echo "::set-env name=TARGETS::$(./src/utils/build-targets.sh -n -s ${{ matrix.start }} -c ${{ matrix.count }})"
-            echo "::set-env name=BUILD_SUFFIX::ci-$(git rev-parse --short ${COMMIT_ID})"
+            echo "::set-env name=BUILD_SUFFIX::${BUILD_SUFFIX}"
             echo "::set-env name=BUILD_NAME::inav-$(make print_version)-ci-$(date '+%Y%m%d')-${BUILD_SUFFIX}"
             echo "::set-env name=IS_LAST_JOB::$([ $(expr ${{ strategy.job-index }} + 1) = ${{ strategy.job-total }} ] && echo yes)"
         - name: Ensure all targets will be tested
